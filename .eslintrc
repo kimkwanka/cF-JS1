@@ -11,6 +11,7 @@
         "sourceType": "module"
     },
     "rules": {
-        "brace-style":["error", "1tbs"]
+        "brace-style": ["error", "1tbs"],
+        "no-plusplus": ["error", { "allowForLoopAfterthoughts" : true }]
     }
 }
