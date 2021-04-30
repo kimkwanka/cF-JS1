@@ -22,7 +22,7 @@ const bigBoiStr = ' - Wow, that\'s big!';
 let gotBigBoi = false;
 
 // Iterate over all pokemon in array and output to DOM
-for (var i=0; i < pokemonList.length; i++) {
+for (let i=0; i < pokemonList.length; i++) {
   const name = pokemonList[i].name;
   const height = pokemonList[i].height;
 
