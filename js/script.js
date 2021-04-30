@@ -7,9 +7,9 @@ pokemonList[0] = {
 };
 
 pokemonList.push({
-  name: 'Charmander',
-  height: 0.6,
-  types: ['fire'],
+  name: 'Charizard',
+  height: 1.7,
+  types: ['fire', 'flying'],
 });
 
 pokemonList = pokemonList.concat([{
@@ -17,3 +17,17 @@ pokemonList = pokemonList.concat([{
   height: 0.5,
   types: ['water'],
 }]);
+
+const bigBoiStr = ' - Wow, that\'s big!'; 
+
+// Iterate over all pokemon in array and write to DOM
+
+for (var i=0; i < pokemonList.length; i++) {
+  const name = pokemonList[i].name;
+  const height = pokemonList[i].height;
+
+  // Add special suffix if pokemon is a big boi
+  const suffixStr = (height > 1.0) ? bigBoiStr : '';
+
+  document.write(`<h2>${name} (height:${height})${suffixStr}</h2>`)
+}
