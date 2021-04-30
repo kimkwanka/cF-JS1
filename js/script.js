@@ -14,20 +14,21 @@ pokemonList.push({
 
 pokemonList = pokemonList.concat([{
   name: 'Squirtle',
-  height: 0.5,
+  height: 1.5,
   types: ['water'],
 }]);
 
 const bigBoiStr = ' - Wow, that\'s big!'; 
+let gotBigBoi = false;
 
-// Iterate over all pokemon in array and write to DOM
-
+// Iterate over all pokemon in array and output to DOM
 for (var i=0; i < pokemonList.length; i++) {
   const name = pokemonList[i].name;
   const height = pokemonList[i].height;
 
-  // Add special suffix if pokemon is a big boi
-  const suffixStr = (height > 1.0) ? bigBoiStr : '';
+  // Add special suffix if pokemon is a big boi and it's the first one
+  const suffixStr = (height > 1.0 && !gotBigBoi) ? bigBoiStr : '';
+  gotBigBoi = suffixStr != '';
 
   document.write(`<h2>${name} (height:${height})${suffixStr}</h2>`)
 }
