@@ -1,0 +1,36 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  font-family: sans-serif;
+  min-height: 100vh;
+}
+
+.content {
+  border: 1px solid #333;
+}
+
+.pokemon-heading {
+  font-size: 16px;
+  font-weight: 400;
+  margin-left: 10px;
+}
+
+.pokemon-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pokemon-button {
+  border: none;
+  margin: 10px 10px;
+  min-width: 200px;
+  padding: 10px 20px;
+  text-align: left;
+}
