@@ -41,7 +41,7 @@ pokemonRepository.getAll().forEach((pokemon) => {
 
   // Add special suffix if pokemon is a big boi and it's the first one
   const suffixStr = (height > 1.0 && !gotBigBoi) ? bigBoiStr : '';
-  gotBigBoi = suffixStr !== '';
+  gotBigBoi = gotBigBoi || suffixStr !== '';
 
   document.write(`<h2>${name} (height:${height})${suffixStr}</h2>`);
 });
