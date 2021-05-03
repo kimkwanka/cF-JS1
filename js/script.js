@@ -1,6 +1,6 @@
 // eslint-disable-next-line func-names
 const pokemonRepository = (function () {
-  let pokemonList = [];
+  const pokemonList = [];
 
   pokemonList[0] = {
     name: 'Bulbasaur',
@@ -14,12 +14,6 @@ const pokemonRepository = (function () {
     types: ['fire', 'flying'],
   });
 
-  pokemonList = pokemonList.concat([{
-    name: 'Squirtle',
-    height: 1.5,
-    types: ['water'],
-  }]);
-
   return {
     getAll() {
       return pokemonList;
@@ -28,10 +22,43 @@ const pokemonRepository = (function () {
       if (typeof pokemon !== 'object') {
         return;
       }
-      pokemonList.push(pokemon);
+      const expectedKeys = ['name', 'height', 'types'];
+
+      // Filter out all [key, value] pairs that are not expected
+      const filteredEntries = Object.entries(pokemon).filter(([k, _]) => expectedKeys.includes(k));
+
+      // Don't add the pokemon if the number of keys after filtering differs from expectation
+      if (filteredEntries.length !== expectedKeys.length) {
+        return;
+      }
+
+      // Reconstruct the pokemon from the filtered entries
+      const filteredPokemon = Object.fromEntries(filteredEntries);
+
+      pokemonList.push(filteredPokemon);
+    },
+    find(nameToFind) {
+      return pokemonList.filter(({ name }) => name === nameToFind)[0];
     },
   };
 }());
+
+// Try to add pokemon with invalid keys
+pokemonRepository.add({
+  name: 'Squirtle',
+  height: 1.5,
+  types: ['water'],
+  invalidKey1: '',
+  invalidKey2: 123123,
+});
+
+// Try to add pokemon with no height
+pokemonRepository.add({
+  name: 'Squirtle2',
+  types: ['water'],
+  invalidKey1: '',
+  invalidKey2: 123123,
+});
 
 const bigBoiStr = ' - Wow, that\'s big!';
 let gotBigBoi = false;
