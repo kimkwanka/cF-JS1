@@ -14,32 +14,38 @@ const pokemonRepository = (function () {
     types: ['fire', 'flying'],
   });
 
+  function getAll() {
+    return pokemonList;
+  }
+
+  function add(pokemon) {
+    if (!pokemon || typeof pokemon !== 'object') {
+      return;
+    }
+    const expectedKeys = ['name', 'height', 'types'];
+
+    // Filter out all [key, value] pairs that are not expected
+    const filteredEntries = Object.entries(pokemon).filter(([k, _]) => expectedKeys.includes(k));
+
+    // Don't add the pokemon if the number of keys after filtering differs from expectation
+    if (filteredEntries.length !== expectedKeys.length) {
+      return;
+    }
+
+    // Reconstruct the pokemon from the filtered entries
+    const filteredPokemon = Object.fromEntries(filteredEntries);
+
+    pokemonList.push(filteredPokemon);
+  }
+
+  function find(nameToFind) {
+    return pokemonList.filter(({ name }) => name === nameToFind)[0];
+  }
+
   return {
-    getAll() {
-      return pokemonList;
-    },
-    add(pokemon) {
-      if (!pokemon || typeof pokemon !== 'object') {
-        return;
-      }
-      const expectedKeys = ['name', 'height', 'types'];
-
-      // Filter out all [key, value] pairs that are not expected
-      const filteredEntries = Object.entries(pokemon).filter(([k, _]) => expectedKeys.includes(k));
-
-      // Don't add the pokemon if the number of keys after filtering differs from expectation
-      if (filteredEntries.length !== expectedKeys.length) {
-        return;
-      }
-
-      // Reconstruct the pokemon from the filtered entries
-      const filteredPokemon = Object.fromEntries(filteredEntries);
-
-      pokemonList.push(filteredPokemon);
-    },
-    find(nameToFind) {
-      return pokemonList.filter(({ name }) => name === nameToFind)[0];
-    },
+    getAll,
+    add,
+    find,
   };
 }());
 
