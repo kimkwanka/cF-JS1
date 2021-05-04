@@ -19,7 +19,7 @@ const pokemonRepository = (function () {
       return pokemonList;
     },
     add(pokemon) {
-      if (typeof pokemon !== 'object') {
+      if (!pokemon || typeof pokemon !== 'object') {
         return;
       }
       const expectedKeys = ['name', 'height', 'types'];
@@ -59,6 +59,8 @@ pokemonRepository.add({
   invalidKey1: '',
   invalidKey2: 123123,
 });
+
+pokemonRepository.add(null);
 
 const bigBoiStr = ' - Wow, that\'s big!';
 let gotBigBoi = false;
