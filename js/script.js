@@ -42,22 +42,22 @@ const pokemonRepository = (function () {
     return pokemonList.filter(({ name }) => name === nameToFind)[0];
   }
 
+  function showDetails(pokemon) {
+    // eslint-disable-next-line no-console
+    console.log(pokemon);
+  }
+
   function addListItem(pokemon) {
     const newButton = document.createElement('button');
     newButton.innerText = pokemon.name;
     newButton.classList.add('pokemon-button');
-    newButton.addEventListener('click', () => this.showDetails(pokemon));
+    newButton.addEventListener('click', () => showDetails(pokemon));
 
     const listItem = document.createElement('li');
     listItem.appendChild(newButton);
 
     const list = document.querySelector('.pokemon-list');
     list.appendChild(listItem);
-  }
-
-  function showDetails(pokemon) {
-    // eslint-disable-next-line no-console
-    console.log(pokemon);
   }
 
   return {
