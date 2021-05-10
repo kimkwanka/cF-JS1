@@ -47,17 +47,19 @@ const pokemonRepository = (function () {
 
     showLoadingSpinner();
 
-    return fetch(pokemon.detailsUrl).then((res) => res.json()).then((data) => {
-      pokemon.height = data.height;
-      pokemon.weight = data.weight;
-      pokemon.types = data.types;
-      pokemon.imgUrl = data.sprites.front_default;
-
-      hideLoadingSpinner();
-    }).catch((e) => {
-      hideLoadingSpinner();
-      console.error(e);
-    });
+    return fetch(pokemon.detailsUrl).then((res) => res.json())
+      .then((data) => {
+        pokemon.height = data.height;
+        pokemon.weight = data.weight;
+        pokemon.types = data.types;
+        pokemon.imgUrl = data.sprites.front_default;
+      })
+      .catch((e) => {
+        console.error(e);
+      })
+      .finally(() => {
+        hideLoadingSpinner();
+      });
   }
 
   function showDetails(pokemon) {
@@ -83,13 +85,16 @@ const pokemonRepository = (function () {
   function loadList() {
     showLoadingSpinner();
 
-    return fetch(apiUrl).then((res) => res.json()).then((data) => {
-      data.results.forEach(({ name, url }) => add({ name, detailsUrl: url }));
-      hideLoadingSpinner();
-    }).catch((e) => {
-      hideLoadingSpinner();
-      console.error(e);
-    });
+    return fetch(apiUrl).then((res) => res.json())
+      .then((data) => {
+        data.results.forEach(({ name, url }) => add({ name, detailsUrl: url }));
+      })
+      .catch((e) => {
+        console.error(e);
+      })
+      .finally(() => {
+        hideLoadingSpinner();
+      });
   }
 
   return {
@@ -102,8 +107,12 @@ const pokemonRepository = (function () {
   };
 }());
 
-pokemonRepository.loadList().then(() => {
-  pokemonRepository.getAll().forEach((pokemon) => {
-    pokemonRepository.addListItem(pokemon);
+pokemonRepository.loadList()
+  .then(() => {
+    pokemonRepository.getAll().forEach((pokemon) => {
+      pokemonRepository.addListItem(pokemon);
+    });
+  })
+  .catch((e) => {
+    console.error(e);
   });
-}).catch((e) => console.error(e));
