@@ -47,7 +47,8 @@ const pokemonRepository = (function () {
 
     showLoadingSpinner();
 
-    return fetch(pokemon.detailsUrl).then((res) => res.json())
+    return fetch(pokemon.detailsUrl)
+      .then((res) => res.json())
       .then((data) => {
         pokemon.height = data.height;
         pokemon.weight = data.weight;
@@ -85,7 +86,8 @@ const pokemonRepository = (function () {
   function loadList() {
     showLoadingSpinner();
 
-    return fetch(apiUrl).then((res) => res.json())
+    return fetch(apiUrl)
+      .then((res) => res.json())
       .then((data) => {
         data.results.forEach(({ name, url }) => add({ name, detailsUrl: url }));
       })
