@@ -42,10 +42,30 @@ const pokemonRepository = (function () {
     return pokemonList.filter(({ name }) => name === nameToFind)[0];
   }
 
+  function showDetails(pokemon) {
+    // eslint-disable-next-line no-console
+    console.log(pokemon);
+  }
+
+  function addListItem(pokemon) {
+    const newButton = document.createElement('button');
+    newButton.innerText = pokemon.name;
+    newButton.classList.add('pokemon-button');
+    newButton.addEventListener('click', () => showDetails(pokemon));
+
+    const listItem = document.createElement('li');
+    listItem.appendChild(newButton);
+
+    const list = document.querySelector('.pokemon-list');
+    list.appendChild(listItem);
+  }
+
   return {
     getAll,
     add,
     find,
+    addListItem,
+    showDetails,
   };
 }());
 
@@ -68,15 +88,6 @@ pokemonRepository.add({
 
 pokemonRepository.add(null);
 
-const bigBoiStr = ' - Wow, that\'s big!';
-let gotBigBoi = false;
-
 pokemonRepository.getAll().forEach((pokemon) => {
-  const { name, height } = pokemon;
-
-  // Add special suffix if pokemon is a big boi and it's the first one
-  const suffixStr = (height > 1.0 && !gotBigBoi) ? bigBoiStr : '';
-  gotBigBoi = gotBigBoi || suffixStr !== '';
-
-  document.write(`<h2>${name} (height:${height})${suffixStr}</h2>`);
+  pokemonRepository.addListItem(pokemon);
 });
