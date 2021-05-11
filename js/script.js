@@ -13,10 +13,6 @@ const pokemonRepository = (function () {
     if (!pokemon || typeof pokemon !== 'object') {
       return;
     }
-
-    const capitalizedName = pokemon.name.replace(/^\w/, (char) => char.toUpperCase());
-    pokemon.name = capitalizedName;
-
     pokemonList.push(pokemon);
   }
 
