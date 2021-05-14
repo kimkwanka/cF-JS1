@@ -1,18 +1,9 @@
+/* eslint no-param-reassign: ["error", { "props": false }] */
+/* eslint no-console: ["error", { allow: ["warn", "error"] }] */
 // eslint-disable-next-line func-names
 const pokemonRepository = (function () {
   const pokemonList = [];
-
-  pokemonList[0] = {
-    name: 'Bulbasaur',
-    height: 0.7,
-    types: ['grass', 'poison'],
-  };
-
-  pokemonList.push({
-    name: 'Charizard',
-    height: 1.7,
-    types: ['fire', 'flying'],
-  });
+  const apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=1118';
 
   function getAll() {
     return pokemonList;
@@ -22,29 +13,57 @@ const pokemonRepository = (function () {
     if (!pokemon || typeof pokemon !== 'object') {
       return;
     }
-    const expectedKeys = ['name', 'height', 'types'];
-
-    // Filter out all [key, value] pairs that are not expected
-    const filteredEntries = Object.entries(pokemon).filter(([k, _]) => expectedKeys.includes(k));
-
-    // Don't add the pokemon if the number of keys after filtering differs from expectation
-    if (filteredEntries.length !== expectedKeys.length) {
-      return;
-    }
-
-    // Reconstruct the pokemon from the filtered entries
-    const filteredPokemon = Object.fromEntries(filteredEntries);
-
-    pokemonList.push(filteredPokemon);
+    pokemonList.push(pokemon);
   }
 
   function find(nameToFind) {
     return pokemonList.filter(({ name }) => name === nameToFind)[0];
   }
 
+  function showLoadingSpinner() {
+    const loadingSpinner = document.createElement('div');
+    loadingSpinner.classList.add('loading-spinner');
+
+    const pList = document.querySelector('body');
+    pList.appendChild(loadingSpinner);
+  }
+
+  function hideLoadingSpinner() {
+    const loadingSpinner = document.querySelector('.loading-spinner');
+    const pList = document.querySelector('body');
+
+    pList.removeChild(loadingSpinner);
+  }
+
+  function loadDetails(pokemon) {
+    // Don't fetch details multiple times
+    if (pokemon.height) {
+      return Promise.resolve();
+    }
+
+    showLoadingSpinner();
+
+    return fetch(pokemon.detailsUrl)
+      .then((res) => res.json())
+      .then((data) => {
+        pokemon.height = data.height;
+        pokemon.weight = data.weight;
+        pokemon.types = data.types;
+        pokemon.imgUrl = data.sprites.front_default;
+      })
+      .catch((e) => {
+        console.error(e);
+      })
+      .finally(() => {
+        hideLoadingSpinner();
+      });
+  }
+
   function showDetails(pokemon) {
-    // eslint-disable-next-line no-console
-    console.log(pokemon);
+    loadDetails(pokemon).then(() => {
+      // eslint-disable-next-line no-console
+      console.log(pokemon);
+    });
   }
 
   function addListItem(pokemon) {
@@ -60,34 +79,38 @@ const pokemonRepository = (function () {
     list.appendChild(listItem);
   }
 
+  function loadList() {
+    showLoadingSpinner();
+
+    return fetch(apiUrl)
+      .then((res) => res.json())
+      .then((data) => {
+        data.results.forEach(({ name, url }) => add({ name, detailsUrl: url }));
+      })
+      .catch((e) => {
+        console.error(e);
+      })
+      .finally(() => {
+        hideLoadingSpinner();
+      });
+  }
+
   return {
     getAll,
     add,
     find,
     addListItem,
     showDetails,
+    loadList,
   };
 }());
 
-// Try to add pokemon with invalid keys
-pokemonRepository.add({
-  name: 'Squirtle',
-  height: 1.5,
-  types: ['water'],
-  invalidKey1: '',
-  invalidKey2: 123123,
-});
-
-// Try to add pokemon with no height
-pokemonRepository.add({
-  name: 'Squirtle2',
-  types: ['water'],
-  invalidKey1: '',
-  invalidKey2: 123123,
-});
-
-pokemonRepository.add(null);
-
-pokemonRepository.getAll().forEach((pokemon) => {
-  pokemonRepository.addListItem(pokemon);
-});
+pokemonRepository.loadList()
+  .then(() => {
+    pokemonRepository.getAll().forEach((pokemon) => {
+      pokemonRepository.addListItem(pokemon);
+    });
+  })
+  .catch((e) => {
+    console.error(e);
+  });
