@@ -56,6 +56,15 @@
     </div>
     <div class="content">
       <h1>Pokedex</h1>
+      <form class="mb-3" onkeypress="return event.keyCode != 13;">
+        <input
+          id="pokemon-search"
+          type="search"
+          class="form-control"
+          placeholder="Search"
+          aria-label="Search"
+        />
+      </form>
       <ul class="list-group"></ul>
     </div>
     <script

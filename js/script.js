@@ -4,6 +4,7 @@
 const pokemonRepository = (function () {
   const pokemonList = [];
   const apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=1118';
+  let searchTerm = '';
 
   function getAll() {
     return pokemonList;
@@ -109,8 +110,24 @@ const pokemonRepository = (function () {
       });
   }
 
+  function hideUnmatchedPokemon() {
+    const listItems = document.querySelectorAll('.list-group-item');
+    pokemonList.forEach((pokemon, index) => {
+      const isHidden = !pokemon.name.toUpperCase().includes(searchTerm.toUpperCase());
+      listItems[index].classList.toggle('hidden', isHidden);
+    });
+  }
+
+  function enableSearchBar() {
+    const searchBar = document.querySelector('#pokemon-search');
+    searchBar.addEventListener('input', (e) => {
+      searchTerm = e.target.value;
+      hideUnmatchedPokemon();
+    });
+  }
 
   return {
+    enableSearchBar,
     getAll,
     add,
     find,
@@ -125,6 +142,7 @@ pokemonRepository.loadList()
     pokemonRepository.getAll().forEach((pokemon) => {
       pokemonRepository.addListItem(pokemon);
     });
+    pokemonRepository.enableSearchBar();
   })
   .catch((e) => {
     console.error(e);

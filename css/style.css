@@ -8,6 +8,10 @@ body {
   flex-direction: column;
 }
 
+.hidden {
+  display: none;
+}
+
 .modal-img {
   background-color: #eee;
   border-radius: 4px;
