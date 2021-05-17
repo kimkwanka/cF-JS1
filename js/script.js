@@ -72,7 +72,7 @@ const pokemonRepository = (function () {
   function showDetails(pokemon) {
     loadDetails(pokemon).then(() => {
       updateModalWithData(pokemon);
-      // We need to manually trigger showing the modal to make sure data was correctly fetched
+      // We need to manually trigger the modal to make sure data was correctly fetched
       // and applied before showing the modal.
 
       // If we used data-bs-toggle="modal" and data-bs-target="#pokemon-modal" as the trigger,
