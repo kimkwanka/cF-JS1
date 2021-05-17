@@ -93,6 +93,7 @@ const pokemonRepository = (function () {
   function loadList() {
     showLoadingSpinner();
 
+    // Try to fetch the list of pokemon from the given apiURL
     return fetch(apiUrl)
       .then((res) => res.json())
       .then((data) => {
@@ -108,6 +109,9 @@ const pokemonRepository = (function () {
 
   function hideUnmatchedPokemon() {
     const listItems = document.querySelectorAll('.list-group-item');
+
+    // Iterate over all pokemon and hide their corresponding list items in the DOM
+    // if their names don't (at least partially) match the current search term
     pokemonList.forEach((pokemon, index) => {
       const isHidden = !pokemon.name.toUpperCase().includes(searchTerm.toUpperCase());
       listItems[index].classList.toggle('hidden', isHidden);
@@ -115,7 +119,7 @@ const pokemonRepository = (function () {
   }
 
   function initSearchBar() {
-    // Add the event listener to the search bar
+    // Initialize the search bar by adding the event listener
     const searchBar = document.querySelector('#pokemon-search');
     searchBar.addEventListener('input', (e) => {
       searchTerm = e.target.value;
