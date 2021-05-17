@@ -122,24 +122,22 @@ const pokemonRepository = (function () {
     });
   }
 
+  function initialize() {
+    return loadList()
+      .then(() => {
+        getAll().forEach((pokemon) => {
+          addListItem(pokemon);
+        });
+        enableSearchBar();
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  }
+
   return {
-    enableSearchBar,
-    getAll,
-    add,
-    find,
-    addListItem,
-    showDetails,
-    loadList,
+    initialize,
   };
 }());
 
-pokemonRepository.loadList()
-  .then(() => {
-    pokemonRepository.getAll().forEach((pokemon) => {
-      pokemonRepository.addListItem(pokemon);
-    });
-    pokemonRepository.enableSearchBar();
-  })
-  .catch((e) => {
-    console.error(e);
-  });
+pokemonRepository.initialize();
