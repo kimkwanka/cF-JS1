@@ -17,10 +17,6 @@ const pokemonRepository = (function () {
     pokemonList.push(pokemon);
   }
 
-  function find(nameToFind) {
-    return pokemonList.filter(({ name }) => name === nameToFind)[0];
-  }
-
   function showLoadingSpinner() {
     const loadingSpinner = document.createElement('div');
     loadingSpinner.classList.add('loading-spinner');
