@@ -114,7 +114,8 @@ const pokemonRepository = (function () {
     });
   }
 
-  function enableSearchBar() {
+  function initSearchBar() {
+    // Add the event listener to the search bar
     const searchBar = document.querySelector('#pokemon-search');
     searchBar.addEventListener('input', (e) => {
       searchTerm = e.target.value;
@@ -128,7 +129,7 @@ const pokemonRepository = (function () {
         getAll().forEach((pokemon) => {
           addListItem(pokemon);
         });
-        enableSearchBar();
+        initSearchBar();
       })
       .catch((e) => {
         console.error(e);
