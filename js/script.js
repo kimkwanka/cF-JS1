@@ -1,3 +1,4 @@
+/* global bootstrap */
 /* eslint no-param-reassign: ["error", { "props": false }] */
 /* eslint no-console: ["error", { allow: ["warn", "error"] }] */
 // eslint-disable-next-line func-names
@@ -5,6 +6,7 @@ const pokemonRepository = (function () {
   const pokemonList = [];
   const apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=1118';
   let searchTerm = '';
+  let pokemonModal;
 
   function getAll() {
     return pokemonList;
@@ -70,6 +72,13 @@ const pokemonRepository = (function () {
   function showDetails(pokemon) {
     loadDetails(pokemon).then(() => {
       updateModalWithData(pokemon);
+      // We need to manually trigger showing the modal to make sure data was correctly fetched
+      // and applied before showing the modal.
+
+      // If we used data-bs-toggle="modal" and data-bs-target="#pokemon-modal" as the trigger,
+      // the modal would be shown instantly when hitting the button regardless of whether
+      // we were done fetching the data or not.
+      pokemonModal.show();
     });
   }
 
@@ -77,9 +86,6 @@ const pokemonRepository = (function () {
     const newButton = document.createElement('button');
     newButton.innerText = pokemon.name;
     newButton.classList.add('btn', 'btn-primary', 'w-100', 'text-capitalize');
-    newButton.setAttribute('type', 'button');
-    newButton.setAttribute('data-bs-toggle', 'modal');
-    newButton.setAttribute('data-bs-target', '#pokemon-modal');
     newButton.addEventListener('click', () => showDetails(pokemon));
 
     const listItem = document.createElement('li');
@@ -118,6 +124,13 @@ const pokemonRepository = (function () {
     });
   }
 
+  function initModal() {
+    // Create a bootstrap.Modal from our #pokemon-modal to give us greater
+    // control over when to show it.
+    const pokemonModalElement = document.querySelector('#pokemon-modal');
+    pokemonModal = new bootstrap.Modal(pokemonModalElement, {});
+  }
+
   function initSearchBar() {
     // Initialize the search bar by adding the event listener
     const searchBar = document.querySelector('#pokemon-search');
@@ -133,6 +146,7 @@ const pokemonRepository = (function () {
         getAll().forEach((pokemon) => {
           addListItem(pokemon);
         });
+        initModal();
         initSearchBar();
       })
       .catch((e) => {
