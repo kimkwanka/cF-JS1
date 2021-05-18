@@ -55,6 +55,7 @@ const pokemonRepository = (function () {
 
     const modalImage = document.querySelector('.modal-img');
     modalImage.src = pokemon.imgUrl;
+    modalImage.alt = pokemon.name;
 
     const modalText = document.querySelector('.modal-text');
     modalText.innerText = `Height: ${pokemon.height}\nWeight: ${pokemon.weight}`;
@@ -127,6 +128,7 @@ const pokemonRepository = (function () {
           hideLoadingSpinner(loadingSpinner);
         };
         img.src = pokemon.imgUrl;
+        img.alt = pokemon.name;
         newCard.appendChild(img);
 
         const id = document.createElement('p');
