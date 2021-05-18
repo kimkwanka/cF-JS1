@@ -19,19 +19,16 @@ const pokemonRepository = (function () {
     pokemonList.push(pokemon);
   }
 
-  function showLoadingSpinner() {
+  function showLoadingSpinner(parent) {
     const loadingSpinner = document.createElement('div');
     loadingSpinner.classList.add('loading-spinner');
 
-    const pList = document.querySelector('body');
-    pList.appendChild(loadingSpinner);
+    parent.appendChild(loadingSpinner);
+    return loadingSpinner;
   }
 
-  function hideLoadingSpinner() {
-    const loadingSpinner = document.querySelector('.loading-spinner');
-    const pList = document.querySelector('body');
-
-    pList.removeChild(loadingSpinner);
+  function hideLoadingSpinner(loadingSpinner) {
+    loadingSpinner.remove();
   }
 
   function loadDetails(pokemon) {
@@ -40,7 +37,7 @@ const pokemonRepository = (function () {
       return Promise.resolve();
     }
 
-    showLoadingSpinner();
+    const loadingSpinner = showLoadingSpinner(pokemon.button);
 
     return fetch(pokemon.detailsUrl)
       .then((res) => res.json())
@@ -54,7 +51,7 @@ const pokemonRepository = (function () {
         console.error(e);
       })
       .finally(() => {
-        hideLoadingSpinner();
+        hideLoadingSpinner(loadingSpinner);
       });
   }
 
@@ -87,6 +84,7 @@ const pokemonRepository = (function () {
     newButton.innerText = pokemon.name;
     newButton.classList.add('btn', 'btn-primary', 'w-100', 'text-capitalize');
     newButton.addEventListener('click', () => showDetails(pokemon));
+    pokemon.button = newButton;
 
     const listItem = document.createElement('li');
     listItem.classList.add('list-group-item');
@@ -97,7 +95,8 @@ const pokemonRepository = (function () {
   }
 
   function loadList() {
-    showLoadingSpinner();
+    const body = document.querySelector('body');
+    const loadingSpinner = showLoadingSpinner(body);
 
     // Try to fetch the list of pokemon from the given apiURL
     return fetch(apiUrl)
@@ -109,7 +108,7 @@ const pokemonRepository = (function () {
         console.error(e);
       })
       .finally(() => {
-        hideLoadingSpinner();
+        hideLoadingSpinner(loadingSpinner);
       });
   }
 
