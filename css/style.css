@@ -25,20 +25,59 @@
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
 }
+.hidden {
+  display: none;
+}
 
 .content {
-  background-color: #eee;
   align-items: center;
   display: flex;
   flex-direction: column;
   font-family: sans-serif;
+  max-width: 1200px;
+  margin: 0 auto;
   min-height: 100vh;
 }
 
+header {
+  background: linear-gradient(269.82deg, #610808 0%, #e3350d 100%);  
+  box-shadow: 4px 4px 8px -2px #e3340d65;
+  width: 100%;
+}
+
+.header-container {
+  align-items: center;
+  display: flex;
+  margin: 0 auto;
+  padding: 0 16px;
+  max-width: 1200px;
+  width: 100%;
+}
+
 .pokemon-heading {
-  font-size: 16px;
-  font-weight: 400;
-  margin-left: 10px;
+  text-shadow: 2px 2px rgba(0, 0, 0, 0.3);
+  color: white;
+  font-weight: 700;
+  flex-grow: 3;
+}
+
+.pokemon-form {
+  flex-grow: 1;
+}
+
+#pokemon-search {
+  border: none;
+  border-radius: 16px;
+  margin: 16px 0;
+  min-width: 0;
+  outline: none;
+  padding: 8px 16px;
+  width: 100%;
+}
+
+#pokemon-search::placeholder {
+  color: #aaa;
+  opacity: 1;
 }
 
 .pokemon-list {
@@ -73,6 +112,7 @@
 
 .card-name {
   border-radius: 8px;
+  box-shadow: 2px 2px 8px -2px rgba(0, 0, 0, 0.25);
   font-size: 24px;
   font-weight: 700;
   justify-self: start;
@@ -85,8 +125,8 @@
 .card-img {
   image-rendering: pixelated;
   left: 0;
-  top:0;
-  transform: translate(-15%,-15%);
+  top: 0;
+  transform: translate(-15%, -15%);
   position: absolute;
   width: 80%;
 }
@@ -94,7 +134,7 @@
 .card-tag {
   align-self: center;
   border-radius: 4px;
-  box-shadow: 2px 2px 8px -2px rgba(0, 0, 0, 0.25);
+  box-shadow: 2px 2px 8px -2px rgba(0, 0, 0, 0.15);
   font-size: 16px;
   font-weight: 400;
   grid-column: 2 / 3;
@@ -117,7 +157,7 @@
 
 @media screen and (max-width: 704px) {
   .card-img {
-    transform: translate(-15%,-25%);
+    transform: translate(-15%, -25%);
   }
 }
 
@@ -128,11 +168,17 @@
   .card-id {
     font-size: 48px;
   }
+  .header-container {
+    flex-direction: column;
+  }
+  .pokemon-form {
+    width: 100%;
+  }
 }
 
 @media screen and (max-width: 300px) {
   .card-img {
-    transform: translate(-15%,-5%);
+    transform: translate(-15%, -5%);
   }
   .card-name {
     font-size: 18px;
@@ -144,7 +190,7 @@
     font-size: 24px;
   }
 }
- 
+
 .pokemon-card.normal {
   background: linear-gradient(261.64deg, #9d9d83 0%, #686852 100%);
 }
@@ -288,7 +334,7 @@
   max-width: 400px;
   padding: 20px;
   transition: all 0.25s ease-in-out;
-  transform: translateY(200px);
+  transform: translateY(-300px) scale(.7) ;
   width: 100%;
 }
 
@@ -318,10 +364,6 @@
   grid-column: 1 / 3;
   margin: 0;
   line-height: 1.8;
-}
-
-.hidden {
-  display: none;
 }
 
 .modal-img {

@@ -16,21 +16,25 @@
       <div class="modal">
         <h1 class="modal-title"></h1>
         <button class="modal-close">x</button>
-        <img src="" alt="" class="modal-img">
+        <img src="" alt="" class="modal-img" />
         <p class="modal-text"></p>
       </div>
     </div>
+    <header>
+      <div class="header-container">
+        <h1 class="pokemon-heading">Pokédex</h1>
+        <form class="pokemon-form" onkeypress="return event.keyCode != 13;">
+          <input
+            id="pokemon-search"
+            type="search"
+            class=""
+            placeholder="Search"
+            aria-label="Search"
+          />
+        </form>
+      </div>
+    </header>
     <div class="content">
-      <h1 class="pokemon-heading">Pokédex</h1>
-      <form class="" onkeypress="return event.keyCode != 13;">
-        <input
-          id="pokemon-search"
-          type="search"
-          class=""
-          placeholder="Search"
-          aria-label="Search"
-        />
-      </form>
       <ul class="pokemon-list"></ul>
     </div>
     <script src="js/script.js"></script>
