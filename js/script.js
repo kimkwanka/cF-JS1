@@ -4,7 +4,7 @@
 // eslint-disable-next-line func-names
 const pokemonRepository = (function () {
   const pokemonList = [];
-  const apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=1118';
+  const apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=151';
   let searchTerm = '';
   let pokemonModal;
 
@@ -37,8 +37,6 @@ const pokemonRepository = (function () {
       return Promise.resolve();
     }
 
-    const loadingSpinner = showLoadingSpinner(pokemon.button);
-
     return fetch(pokemon.detailsUrl)
       .then((res) => res.json())
       .then((data) => {
@@ -49,9 +47,6 @@ const pokemonRepository = (function () {
       })
       .catch((e) => {
         console.error(e);
-      })
-      .finally(() => {
-        hideLoadingSpinner(loadingSpinner);
       });
   }
 
@@ -84,7 +79,6 @@ const pokemonRepository = (function () {
     newButton.innerText = pokemon.name;
     newButton.classList.add('btn', 'btn-primary', 'w-100', 'text-capitalize');
     newButton.addEventListener('click', () => showDetails(pokemon));
-    pokemon.button = newButton;
 
     const listItem = document.createElement('li');
     listItem.classList.add('list-group-item');
@@ -92,6 +86,25 @@ const pokemonRepository = (function () {
 
     const list = document.querySelector('.list-group');
     list.appendChild(listItem);
+
+    const loadingSpinner = showLoadingSpinner(newButton);
+
+    loadDetails(pokemon)
+      .then(() => {
+        const img = document.createElement('img');
+        img.classList.add('btn-img');
+        img.onload = () => {
+          hideLoadingSpinner(loadingSpinner);
+        };
+        img.onerror = () => {
+          hideLoadingSpinner(loadingSpinner);
+        };
+        img.src = pokemon.imgUrl;
+        newButton.appendChild(img);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
   }
 
   function loadList() {

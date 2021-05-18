@@ -17,6 +17,12 @@
   width: 100%;
 }
 
+.btn-img {
+  border-radius: 4px;
+  image-rendering: pixelated;
+  width: 100%;
+}
+
 .btn {
   position: relative;
 }
