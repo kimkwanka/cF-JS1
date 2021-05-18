@@ -1,19 +1,13 @@
-body {
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-}
-
 .hidden {
   display: none;
 }
 
-/* Fix list width above 290px so that button widths stay consistent */
-/* when items get hidden through entering search terms */
-@media (min-width: 290px) {
-  .list-group {
-    width: 270px;
-  }
+.list-group-item {
+  flex: 1 1 200px;
+}
+
+.list-group-item+.list-group-item {
+  border-top-width: 1px;
 }
 
 .modal-img {
