@@ -149,7 +149,7 @@ const pokemonRepository = (function () {
         img.alt = pokemon.name;
         newCard.appendChild(img);
 
-        const id = document.createElement('p');
+        const id = document.createElement('h3');
         id.classList.add('card-id');
         id.innerText = `#${pokemon.id}`;
         newCard.appendChild(id);
