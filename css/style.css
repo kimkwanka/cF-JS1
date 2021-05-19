@@ -89,6 +89,7 @@ header {
 
 .pokemon-card {
   align-items: start;
+  background: linear-gradient(269.82deg, #4e4e4e 0%, #707070 100%);
   border: none;
   box-sizing: border-box;
   box-shadow: 4px 4px 8px -2px rgba(0, 0, 0, 0.25);
