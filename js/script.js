@@ -62,14 +62,14 @@ const pokemonRepository = (function () {
   }
 
   function updateModalWithData(pokemon) {
-    const modalTitle = document.querySelector('.modal-title');
-    modalTitle.innerText = pokemon.name;
+    const modalName = document.querySelector('.modal-name');
+    modalName.innerText = pokemon.name;
 
     const modalImage = document.querySelector('.modal-img');
     modalImage.src = pokemon.imgUrl;
     modalImage.alt = pokemon.name;
 
-    const modalText = document.querySelector('.modal-text');
+    const modalText = document.querySelector('.modal-biometrics');
     modalText.innerText = `Height: ${pokemon.height}\nWeight: ${pokemon.weight}`;
   }
 
