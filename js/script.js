@@ -96,6 +96,7 @@ const pokemonRepository = (function () {
     const newCard = document.createElement('div');
     newCard.classList.add('pokemon-card');
     newCard.addEventListener('click', () => showDetails(pokemon));
+    newCard.tabIndex = '0';
 
     const name = document.createElement('p');
     name.classList.add('card-name');

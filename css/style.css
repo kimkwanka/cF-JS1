@@ -104,10 +104,35 @@ header {
   padding: 20px;
   text-align: left;
   text-transform: capitalize;
+  transition: all 0.25s ease-in-out;
   overflow: hidden;
   position: relative;
   height: 100%;
   width: 100%;
+}
+
+.pokemon-card:focus {
+  outline: 1px solid #e3350d;
+}
+
+.pokemon-card:hover,
+.pokemon-card:focus {
+  background: linear-gradient(269.82deg, #610808 0%, #e3350d 100%) !important;  
+  transform: scale(1.05);
+}
+
+.pokemon-card:hover .card-name,
+.pokemon-card:focus .card-name {
+  transform: scale(1.5) translateX(35%);
+}
+
+.pokemon-card:hover .card-img,
+.pokemon-card:focus .card-img {
+  transform: scale(1.5) translate(0);
+}
+.pokemon-card:hover .card-id,
+.pokemon-card:focus .card-id {
+  transform: scale(1.1) translateX(-5%);
 }
 
 .card-name {
@@ -119,7 +144,8 @@ header {
   margin: 0;
   padding: 0px 8px;
   text-shadow: 2px 2px rgba(0, 0, 0, 0.3);
-  z-index: 1;
+  transition: transform 0.25s ease-in-out;
+  z-index: 2;
 }
 
 .card-img {
@@ -127,8 +153,10 @@ header {
   left: 0;
   top: 0;
   transform: translate(-15%, -15%);
+  transition: transform 0.25s ease-in-out;
   position: absolute;
   width: 80%;
+  z-index: 1;
 }
 
 .card-tag {
@@ -141,7 +169,7 @@ header {
   justify-self: end;
   margin: 0;
   padding: 2px 7px;
-  z-index: 1;
+  z-index: 2;
 }
 
 .card-id {
@@ -153,6 +181,7 @@ header {
   grid-row: 3 / 4;
   justify-self: end;
   margin: 0;
+  transition: transform 0.25s ease-in-out;
 }
 
 @media screen and (max-width: 704px) {
@@ -312,7 +341,7 @@ header {
   padding: 20px;
   position: fixed;
   top: 0;
-  transition: all 0.25s;
+  transition: all 0.25s ease-in-out;
   opacity: 0;
   width: 100%;
   visibility: hidden;
