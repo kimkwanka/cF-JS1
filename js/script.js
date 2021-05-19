@@ -28,6 +28,7 @@ const pokemonRepository = (function () {
   const pokemonList = [];
   const apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=151';
   let searchTerm = '';
+  let isModalOpen = false;
 
   function getAll() {
     return pokemonList;
@@ -162,6 +163,7 @@ const pokemonRepository = (function () {
       const modal = document.querySelector('.modal');
       modal.classList.add('is-visible');
     }, 0);
+    isModalOpen = true;
   }
 
   function hideModal() {
@@ -169,9 +171,14 @@ const pokemonRepository = (function () {
     modalContainer.classList.remove('is-visible');
     const modal = document.querySelector('.modal');
     modal.classList.remove('is-visible');
+    isModalOpen = false;
   }
 
   function showDetails(pokemon) {
+    if (isModalOpen) {
+      return;
+    }
+
     const loadingSpinner = showLoadingSpinner();
 
     fetchDetails(pokemon)
