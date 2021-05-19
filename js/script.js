@@ -62,12 +62,18 @@ const pokemonRepository = (function () {
   }
 
   function updateModalWithData(pokemon) {
+    const modalId = document.querySelector('.modal-id');
+    modalId.innerText = `#${pokemon.id}`;
+
     const modalName = document.querySelector('.modal-name');
     modalName.innerText = pokemon.name;
+
+    const mainType = pokemon.types[0].type.name;
 
     const modalImage = document.querySelector('.modal-img');
     modalImage.src = pokemon.imgUrl;
     modalImage.alt = pokemon.name;
+    modalImage.className = `modal-img gradient--${mainType}`;
 
     const modalText = document.querySelector('.modal-biometrics');
     modalText.innerText = `Height: ${pokemon.height}\nWeight: ${pokemon.weight}`;
@@ -127,8 +133,9 @@ const pokemonRepository = (function () {
 
     loadBasicInfo(pokemon)
       .then(() => {
-        newCard.classList.add(pokemon.types[0].type.name);
-        name.classList.add(pokemon.types[0].type.name);
+        const mainType = pokemon.types[0].type.name;
+        newCard.classList.add(`gradient--${mainType}`);
+        name.classList.add(mainType);
 
         pokemon.types.forEach((t) => {
           const typeTag = document.createElement('p');
