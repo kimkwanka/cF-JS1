@@ -42,9 +42,12 @@ const pokemonRepository = (function () {
 
   function showLoadingSpinner(parent) {
     const loadingSpinner = document.createElement('div');
-    loadingSpinner.classList.add('loading-spinner');
+    const loadingSpinnerClass = parent ? 'loading-spinner' : 'loading-spinner solo-spinner';
+    loadingSpinner.className = loadingSpinnerClass;
 
-    parent.appendChild(loadingSpinner);
+    const loadingSpinnerParent = parent || document.querySelector('body');
+
+    loadingSpinnerParent.appendChild(loadingSpinner);
     return loadingSpinner;
   }
 
@@ -169,16 +172,22 @@ const pokemonRepository = (function () {
   }
 
   function showDetails(pokemon) {
-    fetchDetails(pokemon).then(() => {
-      updateModalWithData(pokemon);
-      // We need to manually trigger the modal to make sure data was correctly fetched
-      // and applied before showing the modal.
+    const loadingSpinner = showLoadingSpinner();
 
-      // If we used data-bs-toggle="modal" and data-bs-target="#pokemon-modal" as the trigger,
-      // the modal would be shown instantly when hitting the button regardless of whether
-      // we were done fetching the data or not.
-      showModal();
-    });
+    fetchDetails(pokemon)
+      .then(() => {
+        updateModalWithData(pokemon);
+        // We need to manually trigger the modal to make sure data was correctly fetched
+        // and applied before showing the modal.
+
+        // If we used data-bs-toggle="modal" and data-bs-target="#pokemon-modal" as the trigger,
+        // the modal would be shown instantly when hitting the button regardless of whether
+        // we were done fetching the data or not.
+        showModal();
+      })
+      .finally(() => {
+        hideLoadingSpinner(loadingSpinner);
+      });
   }
 
   function addListItem(pokemon) {
@@ -238,8 +247,7 @@ const pokemonRepository = (function () {
   }
 
   function loadList() {
-    const body = document.querySelector('body');
-    const loadingSpinner = showLoadingSpinner(body);
+    const loadingSpinner = showLoadingSpinner();
 
     // Try to fetch the list of pokemon from the given apiURL
     return fetch(apiUrl)

@@ -468,6 +468,13 @@ header {
   width: 100%;
 }
 
+.solo-spinner {
+  transform: scale(3);
+  position: fixed;
+  z-index: 999;
+}
+
+
 .hidden {
   display: none;
 }
