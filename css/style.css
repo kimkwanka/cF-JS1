@@ -357,7 +357,7 @@ header {
   display: flex;
   flex-direction: column;
   max-width: 400px;
-  padding: 20px;
+  padding: 16px 0;
   position: relative;
   transition: all 0.25s ease-in-out;
   transform: translateY(-300px) scale(.7) ;
@@ -370,12 +370,12 @@ header {
 
 .modal-id {
   color: #aaa;
-  margin: 0;
+  margin: 0 16px;
 }
 
 .modal-name {
   font-size: 36px;
-  margin: 0;
+  margin: 0 16px;
   text-transform: capitalize;
 }
 
@@ -401,14 +401,17 @@ header {
 
 .modal-img {
   background-color: #eee;
-  border-radius: 4px;
   image-rendering: pixelated;
   width: 100%;
 }
 
 .modal-biometrics {
-  margin: 0;
+  margin: 0 16px;
   line-height: 1.8;
+}
+
+.modal-weaknesses {
+  margin: 0 16px;
 }
 
 .loading-spinner {
