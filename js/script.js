@@ -198,6 +198,16 @@ const pokemonRepository = (function () {
     });
   }
 
+  function initWindow() {
+    // Initialize the search bar by adding the event listener
+    window.addEventListener('keydown', (e) => {
+      const modalContainer = document.querySelector('#modal-container');
+      if (e.key === 'Escape' && modalContainer.classList.contains('is-visible')) {
+        hideModal();
+      }
+    });
+  }
+
   function initialize() {
     return loadList()
       .then(() => {
@@ -206,6 +216,7 @@ const pokemonRepository = (function () {
         });
         initModal();
         initSearchBar();
+        initWindow();
       })
       .catch((e) => {
         console.error(e);
