@@ -29,7 +29,7 @@ const pokemonRepository = (function () {
     loadingSpinner.remove();
   }
 
-  function loadBasicInfo(pokemon) {
+  function fetchBasicInfo(pokemon) {
     return fetch(pokemon.detailsUrl)
       .then((res) => res.json())
       .then((data) => {
@@ -45,7 +45,7 @@ const pokemonRepository = (function () {
       });
   }
 
-  function loadDetails(pokemon) {
+  function fetchDetails(pokemon) {
     // Don't fetch details multiple times
     if (pokemon.flavorText) {
       return Promise.resolve();
@@ -98,7 +98,7 @@ const pokemonRepository = (function () {
   }
 
   function showDetails(pokemon) {
-    loadDetails(pokemon).then(() => {
+    fetchDetails(pokemon).then(() => {
       updateModalWithData(pokemon);
       // We need to manually trigger the modal to make sure data was correctly fetched
       // and applied before showing the modal.
@@ -131,7 +131,7 @@ const pokemonRepository = (function () {
 
     const loadingSpinner = showLoadingSpinner(newCard);
 
-    loadBasicInfo(pokemon)
+    fetchBasicInfo(pokemon)
       .then(() => {
         const mainType = pokemon.types[0].type.name;
         newCard.classList.add(`gradient--${mainType}`);
