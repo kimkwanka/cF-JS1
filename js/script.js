@@ -29,20 +29,32 @@ const pokemonRepository = (function () {
     loadingSpinner.remove();
   }
 
-  function loadDetails(pokemon) {
-    // Don't fetch details multiple times
-    if (pokemon.height) {
-      return Promise.resolve();
-    }
-
+  function loadBasicInfo(pokemon) {
     return fetch(pokemon.detailsUrl)
       .then((res) => res.json())
       .then((data) => {
         pokemon.id = data.id;
+        pokemon.speciesUrl = data.species.url;
         pokemon.height = data.height;
         pokemon.weight = data.weight;
         pokemon.types = data.types;
         pokemon.imgUrl = data.sprites.front_default;
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  }
+
+  function loadDetails(pokemon) {
+    // Don't fetch details multiple times
+    if (pokemon.flavorText) {
+      return Promise.resolve();
+    }
+
+    return fetch(pokemon.speciesUrl)
+      .then((res) => res.json())
+      .then((data) => {
+        pokemon.flavorText = data.flavor_text_entries[0].flavor_text;
       })
       .catch((e) => {
         console.error(e);
@@ -113,7 +125,7 @@ const pokemonRepository = (function () {
 
     const loadingSpinner = showLoadingSpinner(newCard);
 
-    loadDetails(pokemon)
+    loadBasicInfo(pokemon)
       .then(() => {
         newCard.classList.add(pokemon.types[0].type.name);
         name.classList.add(pokemon.types[0].type.name);
