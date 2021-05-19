@@ -93,7 +93,7 @@ const pokemonRepository = (function () {
   }
 
   function addListItem(pokemon) {
-    const newCard = document.createElement('div');
+    const newCard = document.createElement('li');
     newCard.classList.add('pokemon-card');
     newCard.addEventListener('click', () => showDetails(pokemon));
     newCard.addEventListener('keydown', (e) => {
@@ -103,7 +103,7 @@ const pokemonRepository = (function () {
     });
     newCard.tabIndex = '0';
 
-    const name = document.createElement('p');
+    const name = document.createElement('h2');
     name.classList.add('card-name');
     name.innerText = pokemon.name;
     newCard.appendChild(name);
