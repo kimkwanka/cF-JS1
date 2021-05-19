@@ -37,7 +37,7 @@
 }
 
 header {
-  background: linear-gradient(269.82deg, #610808 0%, #e3350d 100%);  
+  background: linear-gradient(269.82deg, #610808 0%, #e3350d 100%);
   box-shadow: 4px 4px 8px -2px #e3340d65;
   width: 100%;
 }
@@ -115,7 +115,7 @@ header {
 
 .pokemon-card:hover,
 .pokemon-card:focus {
-  background: linear-gradient(269.82deg, #610808 0%, #e3350d 100%) !important;  
+  background: linear-gradient(269.82deg, #610808 0%, #e3350d 100%) !important;
   transform: scale(1.05);
 }
 
@@ -354,13 +354,15 @@ header {
 .modal {
   background-color: #fff;
   border-radius: 16px;
+  box-shadow: 8px 8px 8px -2px rgba(0, 0, 0, 0.25);
+  color: #222;
   display: flex;
   flex-direction: column;
-  max-width: 400px;
+  max-width: 600px;
   padding: 16px 0;
   position: relative;
   transition: all 0.25s ease-in-out;
-  transform: translateY(-300px) scale(.7) ;
+  transform: translateY(-300px) scale(0.7);
   width: 100%;
 }
 
@@ -375,7 +377,7 @@ header {
 
 .modal-name {
   font-size: 36px;
-  margin: 0 16px;
+  margin: 8px 16px;
   text-transform: capitalize;
 }
 
@@ -399,19 +401,60 @@ header {
   background: #e3350d;
 }
 
+.modal-types {
+  display: flex;
+  margin: 0 16px;
+}
+
 .modal-img {
-  background-color: #eee;
   image-rendering: pixelated;
+  margin-top: 16px;
   width: 100%;
 }
 
-.modal-biometrics {
-  margin: 0 16px;
+.modal-flavor-text {
+  margin: 32px 16px;
   line-height: 1.8;
 }
 
+.modal-biometrics {
+  display: flex;
+  margin: 16px 16px 0 16px;
+  line-height: 1.8;
+}
+
+.modal-biometrics-text {
+  flex-grow: 1;
+  font-weight: bold;
+  margin: 0;
+}
+
+#modal-height,
+#modal-weight {
+  color: #aaa;
+}
+
 .modal-weaknesses {
+  display: flex;
+  flex-wrap: wrap;
   margin: 0 16px;
+}
+
+.modal-weaknesses-title {
+  margin: 0 0 0 16px;
+}
+
+.modal-tag {
+  border-radius: 4px;
+  box-shadow: 2px 2px 8px -2px rgba(0, 0, 0, 0.15);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 400;
+  grid-column: 2 / 3;
+  margin: 16px 4px 0 0;
+  padding: 2px 7px;
+  text-transform: capitalize;
+  z-index: 2;
 }
 
 .loading-spinner {
