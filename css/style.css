@@ -21,6 +21,8 @@
   --fairy: #f0b6bc;
 }
 
+/* BASIC SITE ELEMENTS */
+
 * {
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
@@ -86,6 +88,8 @@ header {
   padding: 16px;
   width: 100%;
 }
+
+/* POKEMON CARD */
 
 .pokemon-card {
   align-items: start;
@@ -182,152 +186,7 @@ header {
   transition: transform 0.25s ease-in-out;
 }
 
-@media screen and (max-width: 704px) {
-  .card-img {
-    transform: translate(-15%, -25%);
-  }
-}
-
-@media screen and (max-width: 460px) {
-  .pokemon-list {
-    grid-template-columns: 1fr;
-  }
-  .card-id {
-    font-size: 48px;
-  }
-  .header-container {
-    flex-direction: column;
-  }
-  .pokemon-form {
-    width: 100%;
-  }
-}
-
-@media screen and (max-width: 300px) {
-  .card-img {
-    transform: translate(-15%, -5%);
-  }
-  .card-name {
-    font-size: 18px;
-  }
-  .card-tag {
-    font-size: 12px;
-  }
-  .card-id {
-    font-size: 24px;
-  }
-}
-
-.gradient--normal {
-  background: linear-gradient(261.64deg, #9d9d83 0%, #686852 100%);
-}
-.gradient--fire {
-  background: linear-gradient(261.64deg, #e5823b 0%, #a45116 100%);
-}
-.gradient--water {
-  background: linear-gradient(261.64deg, #7093e8 0%, #2255d0 100%);
-}
-.gradient--grass {
-  background: linear-gradient(261.64deg, #7cbd5c 0%, #4c7f33 100%);
-}
-.gradient--electric {
-  background: linear-gradient(261.64deg, #edca3b 0%, #b29210 100%);
-}
-.gradient--ice {
-  background: linear-gradient(261.64deg, #9fd1d1 0%, #5ab0b0 100%);
-}
-.gradient--fighting {
-  background: linear-gradient(261.64deg, #b43a34 0%, #65211d 100%);
-}
-.gradient--poison {
-  background: linear-gradient(261.64deg, #954b95 0%, #512951 100%);
-}
-.gradient--ground {
-  background: linear-gradient(261.64deg, #d7bc71 0%, #b08e32 100%);
-}
-.gradient--flying {
-  background: linear-gradient(261.64deg, #ab96ea 0%, #6742d8 100%);
-}
-.gradient--psychic {
-  background: linear-gradient(261.64deg, #ef618b 0%, #d5154f 100%);
-}
-.gradient--bug {
-  background: linear-gradient(261.64deg, #9fad2b 0%, #545b17 100%);
-}
-.gradient--rock {
-  background: linear-gradient(261.64deg, #ac9944 0%, #635827 100%);
-}
-.gradient--ghost {
-  background: linear-gradient(261.64deg, #73648c 0%, #423a51 100%);
-}
-.gradient--dark {
-  background: linear-gradient(261.64deg, #675a51 0%, #2e2824 100%);
-}
-.gradient--dragon {
-  background: linear-gradient(261.64deg, #7442ee 0%, #4211b9 100%);
-}
-.gradient--steel {
-  background: linear-gradient(261.64deg, #bebeca 0%, #86869c 100%);
-}
-.gradient--fairy {
-  background: linear-gradient(261.64deg, #ecbabf 0%, #d56b76 100%);
-}
-
-.normal {
-  background: var(--normal);
-}
-.fire {
-  background: var(--fire);
-}
-.water {
-  background: var(--water);
-}
-.grass {
-  background: var(--grass);
-}
-.electric {
-  background: var(--electric);
-}
-.ice {
-  background: var(--ice);
-}
-.fighting {
-  background: var(--fighting);
-}
-.poison {
-  background: var(--poison);
-}
-.ground {
-  background: var(--ground);
-}
-.flying {
-  background: var(--flying);
-}
-.psychic {
-  background: var(--psychic);
-}
-.bug {
-  background: var(--bug);
-}
-.rock {
-  background: var(--rock);
-}
-.ghost {
-  background: var(--ghost);
-}
-.dark {
-  background: var(--dark);
-}
-.dragon {
-  background: var(--dragon);
-}
-.steel {
-  background: var(--steel);
-}
-.fairy {
-  background: var(--fairy);
-}
-
+/* MODAL */
 
 /*  To hide the #modal-container via CSS there's 3 options with their own pros and cons:
 
@@ -488,6 +347,8 @@ header {
   z-index: 2;
 }
 
+/* LOADING SPINNER */
+
 .loading-spinner {
   background: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB4bWxuczpzdmc9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjAiIHdpZHRoPSIzMnB4IiBoZWlnaHQ9IjMycHgiIHZpZXdCb3g9IjAgMCAxMjggMTI4IiB4bWw6c3BhY2U9InByZXNlcnZlIj48Zz48ZWxsaXBzZSBjeD0iNjQiIGN5PSIxOC43NSIgcng9IjYuMjUiIHJ5PSIxOC43NSIgZmlsbD0iI2ZmZmZmZiIvPjxlbGxpcHNlIGN4PSI2NCIgY3k9IjE4Ljc1IiByeD0iNi4yNSIgcnk9IjE4Ljc1IiBmaWxsPSIjZmZmZmZmIiB0cmFuc2Zvcm09InJvdGF0ZSgzMCA2NCA2NCkiLz48ZWxsaXBzZSBjeD0iNjQiIGN5PSIxOC43NSIgcng9IjYuMjUiIHJ5PSIxOC43NSIgZmlsbD0iI2U1ZTVlNSIgdHJhbnNmb3JtPSJyb3RhdGUoNjAgNjQgNjQpIi8+PGVsbGlwc2UgY3g9IjY0IiBjeT0iMTguNzUiIHJ4PSI2LjI1IiByeT0iMTguNzUiIGZpbGw9IiNjY2NjY2MiIHRyYW5zZm9ybT0icm90YXRlKDkwIDY0IDY0KSIvPjxlbGxpcHNlIGN4PSI2NCIgY3k9IjE4Ljc1IiByeD0iNi4yNSIgcnk9IjE4Ljc1IiBmaWxsPSIjYjJiMmIyIiB0cmFuc2Zvcm09InJvdGF0ZSgxMjAgNjQgNjQpIi8+PGVsbGlwc2UgY3g9IjY0IiBjeT0iMTguNzUiIHJ4PSI2LjI1IiByeT0iMTguNzUiIGZpbGw9IiM5OTk5OTkiIHRyYW5zZm9ybT0icm90YXRlKDE1MCA2NCA2NCkiLz48ZWxsaXBzZSBjeD0iNjQiIGN5PSIxOC43NSIgcng9IjYuMjUiIHJ5PSIxOC43NSIgZmlsbD0iIzdmN2Y3ZiIgdHJhbnNmb3JtPSJyb3RhdGUoMTgwIDY0IDY0KSIvPjxlbGxpcHNlIGN4PSI2NCIgY3k9IjE4Ljc1IiByeD0iNi4yNSIgcnk9IjE4Ljc1IiBmaWxsPSIjNjY2NjY2IiB0cmFuc2Zvcm09InJvdGF0ZSgyMTAgNjQgNjQpIi8+PGVsbGlwc2UgY3g9IjY0IiBjeT0iMTguNzUiIHJ4PSI2LjI1IiByeT0iMTguNzUiIGZpbGw9IiM0YzRjNGMiIHRyYW5zZm9ybT0icm90YXRlKDI0MCA2NCA2NCkiLz48ZWxsaXBzZSBjeD0iNjQiIGN5PSIxOC43NSIgcng9IjYuMjUiIHJ5PSIxOC43NSIgZmlsbD0iIzMzMzMzMyIgdHJhbnNmb3JtPSJyb3RhdGUoMjcwIDY0IDY0KSIvPjxlbGxpcHNlIGN4PSI2NCIgY3k9IjE4Ljc1IiByeD0iNi4yNSIgcnk9IjE4Ljc1IiBmaWxsPSIjMTkxOTE5IiB0cmFuc2Zvcm09InJvdGF0ZSgzMDAgNjQgNjQpIi8+PGVsbGlwc2UgY3g9IjY0IiBjeT0iMTguNzUiIHJ4PSI2LjI1IiByeT0iMTguNzUiIGZpbGw9IiMwMDAwMDAiIHRyYW5zZm9ybT0icm90YXRlKDMzMCA2NCA2NCkiLz48YW5pbWF0ZVRyYW5zZm9ybSBhdHRyaWJ1dGVOYW1lPSJ0cmFuc2Zvcm0iIHR5cGU9InJvdGF0ZSIgdmFsdWVzPSIwIDY0IDY0OzMwIDY0IDY0OzYwIDY0IDY0OzkwIDY0IDY0OzEyMCA2NCA2NDsxNTAgNjQgNjQ7MTgwIDY0IDY0OzIxMCA2NCA2NDsyNDAgNjQgNjQ7MjcwIDY0IDY0OzMwMCA2NCA2NDszMzAgNjQgNjQiIGNhbGNNb2RlPSJkaXNjcmV0ZSIgZHVyPSI2MDBtcyIgcmVwZWF0Q291bnQ9ImluZGVmaW5pdGUiPjwvYW5pbWF0ZVRyYW5zZm9ybT48L2c+PC9zdmc+");
   background-repeat: no-repeat;
@@ -507,4 +368,154 @@ header {
 
 .hidden {
   display: none;
+}
+
+/* COLORS */
+
+.gradient--normal {
+  background: linear-gradient(261.64deg, #9d9d83 0%, #686852 100%);
+}
+.gradient--fire {
+  background: linear-gradient(261.64deg, #e5823b 0%, #a45116 100%);
+}
+.gradient--water {
+  background: linear-gradient(261.64deg, #7093e8 0%, #2255d0 100%);
+}
+.gradient--grass {
+  background: linear-gradient(261.64deg, #7cbd5c 0%, #4c7f33 100%);
+}
+.gradient--electric {
+  background: linear-gradient(261.64deg, #edca3b 0%, #b29210 100%);
+}
+.gradient--ice {
+  background: linear-gradient(261.64deg, #9fd1d1 0%, #5ab0b0 100%);
+}
+.gradient--fighting {
+  background: linear-gradient(261.64deg, #b43a34 0%, #65211d 100%);
+}
+.gradient--poison {
+  background: linear-gradient(261.64deg, #954b95 0%, #512951 100%);
+}
+.gradient--ground {
+  background: linear-gradient(261.64deg, #d7bc71 0%, #b08e32 100%);
+}
+.gradient--flying {
+  background: linear-gradient(261.64deg, #ab96ea 0%, #6742d8 100%);
+}
+.gradient--psychic {
+  background: linear-gradient(261.64deg, #ef618b 0%, #d5154f 100%);
+}
+.gradient--bug {
+  background: linear-gradient(261.64deg, #9fad2b 0%, #545b17 100%);
+}
+.gradient--rock {
+  background: linear-gradient(261.64deg, #ac9944 0%, #635827 100%);
+}
+.gradient--ghost {
+  background: linear-gradient(261.64deg, #73648c 0%, #423a51 100%);
+}
+.gradient--dark {
+  background: linear-gradient(261.64deg, #675a51 0%, #2e2824 100%);
+}
+.gradient--dragon {
+  background: linear-gradient(261.64deg, #7442ee 0%, #4211b9 100%);
+}
+.gradient--steel {
+  background: linear-gradient(261.64deg, #bebeca 0%, #86869c 100%);
+}
+.gradient--fairy {
+  background: linear-gradient(261.64deg, #ecbabf 0%, #d56b76 100%);
+}
+
+.normal {
+  background: var(--normal);
+}
+.fire {
+  background: var(--fire);
+}
+.water {
+  background: var(--water);
+}
+.grass {
+  background: var(--grass);
+}
+.electric {
+  background: var(--electric);
+}
+.ice {
+  background: var(--ice);
+}
+.fighting {
+  background: var(--fighting);
+}
+.poison {
+  background: var(--poison);
+}
+.ground {
+  background: var(--ground);
+}
+.flying {
+  background: var(--flying);
+}
+.psychic {
+  background: var(--psychic);
+}
+.bug {
+  background: var(--bug);
+}
+.rock {
+  background: var(--rock);
+}
+.ghost {
+  background: var(--ghost);
+}
+.dark {
+  background: var(--dark);
+}
+.dragon {
+  background: var(--dragon);
+}
+.steel {
+  background: var(--steel);
+}
+.fairy {
+  background: var(--fairy);
+}
+
+/* MEDIA QUERIES */
+
+@media screen and (max-width: 704px) {
+  .card-img {
+    transform: translate(-15%, -25%);
+  }
+}
+
+@media screen and (max-width: 460px) {
+  .pokemon-list {
+    grid-template-columns: 1fr;
+  }
+  .card-id {
+    font-size: 48px;
+  }
+  .header-container {
+    flex-direction: column;
+  }
+  .pokemon-form {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 300px) {
+  .card-img {
+    transform: translate(-15%, -5%);
+  }
+  .card-name {
+    font-size: 18px;
+  }
+  .card-tag {
+    font-size: 12px;
+  }
+  .card-id {
+    font-size: 24px;
+  }
 }
