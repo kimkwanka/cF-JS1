@@ -102,7 +102,7 @@ header {
   padding: 20px;
   text-align: left;
   text-transform: capitalize;
-  transition: all 0.25s ease-in-out;
+  transition: transform 0.25s ease-in-out;
   overflow: hidden;
   position: relative;
   height: 100%;
