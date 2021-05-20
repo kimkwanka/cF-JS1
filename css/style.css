@@ -110,7 +110,7 @@ header {
 }
 
 .pokemon-card:focus {
-  outline: 1px solid #e3350d;
+  outline: none;
 }
 
 .pokemon-card:hover,
@@ -394,6 +394,7 @@ header {
   position: absolute;
   right: 16px;
   top: 16px;
+  transition: background-color 0.25s ease-in-out;
 }
 
 .modal-close:hover,
