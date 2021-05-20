@@ -67,6 +67,7 @@ const pokemonRepository = (function () {
         pokemon.height = data.height;
         pokemon.weight = data.weight;
         pokemon.types = data.types;
+        pokemon.mainType = pokemon.types[0].type.name;
         pokemon.imgUrl = data.sprites.front_default;
       })
       .catch((e) => {
@@ -112,12 +113,10 @@ const pokemonRepository = (function () {
       modalTypes.appendChild(typeTag);
     });
 
-    const mainType = pokemon.types[0].type.name;
-
     const modalImage = document.querySelector('.modal-img');
     modalImage.src = pokemon.imgUrl;
     modalImage.alt = pokemon.name;
-    modalImage.className = `modal-img gradient--${mainType}`;
+    modalImage.className = `modal-img gradient--${pokemon.mainType}`;
 
     const modalHeight = document.querySelector('#modal-height');
     modalHeight.innerText = `${pokemon.height * 10}cm`;
@@ -160,8 +159,7 @@ const pokemonRepository = (function () {
     const modalContainer = document.querySelector('#modal-container');
     modalContainer.classList.add('is-visible');
 
-    const modal = document.querySelector('.modal');
-    modal.classList.add('is-visible');
+    modalIsOpen = true;
 
     if (modalWasOpenedByKeyboard) {
       // Save the currently focused element for later and focus the modal's close button
@@ -174,9 +172,6 @@ const pokemonRepository = (function () {
   function hideModal() {
     const modalContainer = document.querySelector('#modal-container');
     modalContainer.classList.remove('is-visible');
-
-    const modal = document.querySelector('.modal');
-    modal.classList.remove('is-visible');
 
     modalIsOpen = false;
 
@@ -192,8 +187,6 @@ const pokemonRepository = (function () {
       return;
     }
 
-    modalIsOpen = true;
-
     const loadingSpinner = showLoadingSpinner();
 
     fetchDetails(pokemon)
@@ -206,9 +199,11 @@ const pokemonRepository = (function () {
       });
   }
 
-  function addListItem(pokemon) {
+  function createPokemonCard(pokemon) {
+    // Create a blank pokemon card and attach event listeners
     const newCard = document.createElement('li');
     newCard.classList.add('pokemon-card');
+
     newCard.addEventListener('click', () => showDetails(pokemon));
     newCard.addEventListener('keydown', (e) => {
       // [ENTER] or [SPACE] key
@@ -220,47 +215,68 @@ const pokemonRepository = (function () {
         showDetails(pokemon);
       }
     });
+    // Make card tabbable
     newCard.tabIndex = '0';
 
+    // Show a loading spinner as long as we're not done
+    // loading the data and image
+    newCard.loadingSpinner = showLoadingSpinner(newCard);
+
+    return newCard;
+  }
+
+  function fillPokemonCardWithData(newCard, pokemon) {
+    // Add the pokemon's name
     const name = document.createElement('h2');
     name.classList.add('card-name');
     name.innerText = pokemon.name;
     newCard.appendChild(name);
 
+    // Color the card itself and the name text background according to
+    // the pokemon's type
+    newCard.classList.add(`gradient--${pokemon.mainType}`);
+    name.classList.add(pokemon.mainType);
+
+    // Add a tag for each type
+    pokemon.types.forEach((t) => {
+      const typeTag = document.createElement('p');
+      typeTag.classList.add('card-tag', t.type.name);
+      typeTag.innerText = t.type.name;
+      newCard.appendChild(typeTag);
+    });
+
+    // Add the pokemon's image and hide the loading spinner
+    // once it is done loading
+    const img = document.createElement('img');
+    img.classList.add('card-img');
+    img.onload = () => {
+      hideLoadingSpinner(newCard.loadingSpinner);
+    };
+    img.onerror = () => {
+      hideLoadingSpinner(newCard.loadingSpinner);
+    };
+    img.src = pokemon.imgUrl;
+    img.alt = pokemon.name;
+    newCard.appendChild(img);
+
+    // Add the pokemon's id (= Pokédex index)
+    const id = document.createElement('h3');
+    id.classList.add('card-id');
+    id.innerText = `#${pokemon.id}`;
+    newCard.appendChild(id);
+  }
+
+  function addListItem(pokemon) {
+    // Create a blank card and add it to the list
+    const newCard = createPokemonCard(pokemon);
+
     const list = document.querySelector('.pokemon-list');
     list.appendChild(newCard);
 
-    const loadingSpinner = showLoadingSpinner(newCard);
-
     fetchBasicInfo(pokemon)
       .then(() => {
-        const mainType = pokemon.types[0].type.name;
-        newCard.classList.add(`gradient--${mainType}`);
-        name.classList.add(mainType);
-
-        pokemon.types.forEach((t) => {
-          const typeTag = document.createElement('p');
-          typeTag.classList.add('card-tag', t.type.name);
-          typeTag.innerText = t.type.name;
-          newCard.appendChild(typeTag);
-        });
-
-        const img = document.createElement('img');
-        img.classList.add('card-img');
-        img.onload = () => {
-          hideLoadingSpinner(loadingSpinner);
-        };
-        img.onerror = () => {
-          hideLoadingSpinner(loadingSpinner);
-        };
-        img.src = pokemon.imgUrl;
-        img.alt = pokemon.name;
-        newCard.appendChild(img);
-
-        const id = document.createElement('h3');
-        id.classList.add('card-id');
-        id.innerText = `#${pokemon.id}`;
-        newCard.appendChild(id);
+        // Fill the card with the pokemon's information
+        fillPokemonCardWithData(newCard, pokemon);
       })
       .catch((e) => {
         console.error(e);
@@ -320,7 +336,7 @@ const pokemonRepository = (function () {
   }
 
   function initWindow() {
-    // Initialize the search bar by adding the event listener
+    // Initialize the search bar by adding the event listeners
     window.addEventListener('keydown', (e) => {
       // [ESCAPE] key
       if (e.keyCode === 27 && modalIsOpen) {
@@ -328,7 +344,7 @@ const pokemonRepository = (function () {
       }
       // [TAB] key
       if (e.keyCode === 9 && modalWasOpenedByKeyboard) {
-        // Trap focus inside modal as long as it's open and only when it was opened by keyboard.
+        // Trap focus inside modal as long as it is open but only when it was opened by keyboard
         if (e.preventDefault) {
           e.preventDefault();
         }
@@ -337,11 +353,14 @@ const pokemonRepository = (function () {
   }
 
   function initialize() {
+    // Load the list of pokemon from the API
     return loadList()
       .then(() => {
+        // Create DOM elements for each pokemon
         getAll().forEach((pokemon) => {
           addListItem(pokemon);
         });
+        // Initialization
         initModal();
         initSearchBar();
         initWindow();

@@ -396,7 +396,7 @@ header {
   width: 100%;
 }
 
-.modal.is-visible {
+#modal-container.is-visible .modal {
   transform: translateY(0);
 }
 
