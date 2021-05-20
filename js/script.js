@@ -158,11 +158,9 @@ const pokemonRepository = (function () {
     const modalContainer = document.querySelector('#modal-container');
     modalContainer.classList.add('is-visible');
 
-    // Force reflow to trigger the dynamically created modal's CSS transition
-    setTimeout(() => {
-      const modal = document.querySelector('.modal');
-      modal.classList.add('is-visible');
-    }, 0);
+    const modal = document.querySelector('.modal');
+    modal.classList.add('is-visible');
+
     isModalOpen = true;
   }
 
