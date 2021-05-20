@@ -28,7 +28,9 @@ const pokemonRepository = (function () {
   const pokemonList = [];
   const apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=151';
   let searchTerm = '';
-  let isModalOpen = false;
+  let modalIsOpen = false;
+  let modalWasOpenedByKeyboard = false;
+  let lastFocusedElement = null;
 
   function getAll() {
     return pokemonList;
@@ -161,33 +163,42 @@ const pokemonRepository = (function () {
     const modal = document.querySelector('.modal');
     modal.classList.add('is-visible');
 
-    isModalOpen = true;
+    if (modalWasOpenedByKeyboard) {
+      // Save the currently focused element for later and focus the modal's close button
+      lastFocusedElement = document.activeElement;
+      const modalCloseButton = document.querySelector('.modal-close');
+      modalCloseButton.focus();
+    }
   }
 
   function hideModal() {
     const modalContainer = document.querySelector('#modal-container');
     modalContainer.classList.remove('is-visible');
+
     const modal = document.querySelector('.modal');
     modal.classList.remove('is-visible');
-    isModalOpen = false;
+
+    modalIsOpen = false;
+
+    if (modalWasOpenedByKeyboard) {
+      modalWasOpenedByKeyboard = false;
+      // Return focus to the element that was focused before opening the modal
+      lastFocusedElement.focus();
+    }
   }
 
   function showDetails(pokemon) {
-    if (isModalOpen) {
+    if (modalIsOpen) {
       return;
     }
+
+    modalIsOpen = true;
 
     const loadingSpinner = showLoadingSpinner();
 
     fetchDetails(pokemon)
       .then(() => {
         updateModalWithData(pokemon);
-        // We need to manually trigger the modal to make sure data was correctly fetched
-        // and applied before showing the modal.
-
-        // If we used data-bs-toggle="modal" and data-bs-target="#pokemon-modal" as the trigger,
-        // the modal would be shown instantly when hitting the button regardless of whether
-        // we were done fetching the data or not.
         showModal();
       })
       .finally(() => {
@@ -200,7 +211,12 @@ const pokemonRepository = (function () {
     newCard.classList.add('pokemon-card');
     newCard.addEventListener('click', () => showDetails(pokemon));
     newCard.addEventListener('keydown', (e) => {
-      if (e.keyCode === 13) {
+      // [ENTER] or [SPACE] key
+      if (e.keyCode === 13 || e.keyCode === 32) {
+        // We need to preventDefault() to stop this event from also triggering
+        // the modal-close button's click handler.
+        e.preventDefault();
+        modalWasOpenedByKeyboard = true;
         showDetails(pokemon);
       }
     });
@@ -283,13 +299,15 @@ const pokemonRepository = (function () {
     // Initialize modal by adding the event listeners
     const modalContainer = document.querySelector('#modal-container');
     modalContainer.addEventListener('click', (e) => {
-      if (e.target === modalContainer) {
+      if (e.target === modalContainer && modalIsOpen) {
         hideModal();
       }
     });
 
     const modalCloseButton = document.querySelector('.modal-close');
-    modalCloseButton.addEventListener('click', hideModal);
+    modalCloseButton.addEventListener('click', () => {
+      hideModal();
+    });
   }
 
   function initSearchBar() {
@@ -304,9 +322,16 @@ const pokemonRepository = (function () {
   function initWindow() {
     // Initialize the search bar by adding the event listener
     window.addEventListener('keydown', (e) => {
-      const modalContainer = document.querySelector('#modal-container');
-      if (e.key === 'Escape' && modalContainer.classList.contains('is-visible')) {
+      // [ESCAPE] key
+      if (e.keyCode === 27 && modalIsOpen) {
         hideModal();
+      }
+      // [TAB] key
+      if (e.keyCode === 9 && modalWasOpenedByKeyboard) {
+        // Trap focus inside modal as long as it's open and only when it was opened by keyboard.
+        if (e.preventDefault) {
+          e.preventDefault();
+        }
       }
     });
   }

@@ -366,7 +366,6 @@ header {
   justify-items: center;
   left: 0;
   overflow: auto;
-  padding: 20px;
   position: fixed;
   top: 0;
   transition: height 0ms 0.25s, opacity 0.25s 0ms ease-in-out;
