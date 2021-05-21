@@ -493,6 +493,8 @@ header {
 @media screen and (max-width: 460px) {
   .pokemon-list {
     grid-template-columns: 1fr;
+    padding: 8px;
+    gap: 8px;
   }
   .card-id {
     font-size: 48px;
@@ -505,6 +507,9 @@ header {
   }
   .pokemon-card {
     height: 141px;
+  }
+  .modal-name {
+    font-size: 24px;
   }
 }
 
