@@ -229,7 +229,6 @@ header {
   top: 0;
   transition: height 0ms 0.25s, opacity 0.25s 0ms ease-in-out;
   opacity: 0;
-  overflow: hidden;
   width: 100%;
   z-index: 999;
 }
