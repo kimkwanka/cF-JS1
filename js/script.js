@@ -31,6 +31,7 @@ const pokemonRepository = (function () {
   let modalIsOpen = false;
   let modalWasOpenedByKeyboard = false;
   let lastFocusedElement = null;
+  let observer = null;
 
   function getAll() {
     return pokemonList;
@@ -199,32 +200,6 @@ const pokemonRepository = (function () {
       });
   }
 
-  function createPokemonCard(pokemon) {
-    // Create a blank pokemon card and attach event listeners
-    const newCard = document.createElement('li');
-    newCard.classList.add('pokemon-card');
-
-    newCard.addEventListener('click', () => showDetails(pokemon));
-    newCard.addEventListener('keydown', (e) => {
-      // [ENTER] or [SPACE] key
-      if (e.keyCode === 13 || e.keyCode === 32) {
-        // We need to preventDefault() to stop this event from also triggering
-        // the modal-close button's click handler.
-        e.preventDefault();
-        modalWasOpenedByKeyboard = true;
-        showDetails(pokemon);
-      }
-    });
-    // Make card tabbable
-    newCard.tabIndex = '0';
-
-    // Show a loading spinner as long as we're not done
-    // loading the data and image
-    newCard.loadingSpinner = showLoadingSpinner(newCard);
-
-    return newCard;
-  }
-
   function fillPokemonCardWithData(newCard, pokemon) {
     // Add the pokemon's name
     const name = document.createElement('h2');
@@ -266,21 +241,55 @@ const pokemonRepository = (function () {
     newCard.appendChild(id);
   }
 
+  function createPokemonCard(pokemon) {
+    // Create a blank pokemon card and attach event listeners
+    const newCard = document.createElement('li');
+    newCard.classList.add('pokemon-card');
+
+    newCard.addEventListener('click', () => showDetails(pokemon));
+    newCard.addEventListener('keydown', (e) => {
+      // [ENTER] or [SPACE] key
+      if (e.keyCode === 13 || e.keyCode === 32) {
+        // We need to preventDefault() to stop this event from also triggering
+        // the modal-close button's click handler.
+        e.preventDefault();
+        modalWasOpenedByKeyboard = true;
+        showDetails(pokemon);
+      }
+    });
+
+    // Make the card tabbable
+    newCard.tabIndex = '0';
+
+    // Create a function that will later be called by the observer
+    // to load the pokemon data once the card is visible on screen.
+    newCard.lazyLoad = () => {
+      fetchBasicInfo(pokemon)
+        .then(() => {
+          // Fill the card with the pokemon's information
+          fillPokemonCardWithData(newCard, pokemon);
+        })
+        .catch((e) => {
+          console.error(e);
+        });
+    };
+    // Add the card to the observer's list of observed entries, so
+    // that it can call lazyLoad() once the card is visible.
+    observer.observe(newCard);
+
+    // Show a loading spinner as long as we're not done
+    // loading the data and image
+    newCard.loadingSpinner = showLoadingSpinner(newCard);
+
+    return newCard;
+  }
+
   function addListItem(pokemon) {
     // Create a blank card and add it to the list
     const newCard = createPokemonCard(pokemon);
 
     const list = document.querySelector('.pokemon-list');
     list.appendChild(newCard);
-
-    fetchBasicInfo(pokemon)
-      .then(() => {
-        // Fill the card with the pokemon's information
-        fillPokemonCardWithData(newCard, pokemon);
-      })
-      .catch((e) => {
-        console.error(e);
-      });
   }
 
   function loadList() {
@@ -335,6 +344,21 @@ const pokemonRepository = (function () {
     });
   }
 
+  function createObserver() {
+    // Create an IntersectionObserver to lazy load the pokemon-cards.
+    observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          // Once a pokemon-card is visible on screen load the pokemon's data
+          // and stop observing that card.
+          entry.target.lazyLoad();
+          observer.unobserve(entry.target);
+        }
+      });
+    });
+    return observer;
+  }
+
   function initWindow() {
     // Initialize the search bar by adding the event listeners
     window.addEventListener('keydown', (e) => {
@@ -353,6 +377,8 @@ const pokemonRepository = (function () {
   }
 
   function initialize() {
+    // Create the IntersectionObserver
+    createObserver();
     // Load the list of pokemon from the API
     return loadList()
       .then(() => {

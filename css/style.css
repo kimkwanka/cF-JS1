@@ -109,7 +109,7 @@ header {
   transition: transform 0.25s ease-in-out;
   overflow: hidden;
   position: relative;
-  height: 100%;
+  height: 171px;
   width: 100%;
 }
 
@@ -502,6 +502,9 @@ header {
   }
   .pokemon-form {
     width: 100%;
+  }
+  .pokemon-card {
+    height: 141px;
   }
 }
 
