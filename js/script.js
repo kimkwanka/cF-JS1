@@ -33,10 +33,12 @@ const pokemonRepository = (function () {
   let lastFocusedElement = null;
   let observer = null;
 
+  // Return the list of all pokemon
   function getAll() {
     return pokemonList;
   }
 
+  // Add a pokemon to the list
   function add(pokemon) {
     if (!pokemon || typeof pokemon !== 'object') {
       return;
@@ -44,8 +46,13 @@ const pokemonRepository = (function () {
     pokemonList.push(pokemon);
   }
 
+  // Show a loading spinner.
+  // If a parent node is provided, the spinner will be attached to it,
+  // if not - we attach to <body> instead.
   function showLoadingSpinner(parent) {
     const loadingSpinner = document.createElement('div');
+    // If we have no parent and therefore attach to <body>, we add an additional
+    // CSS class that scales the spinner 3x and uses position: fixed, instead of absolute.
     const loadingSpinnerClass = parent ? 'loading-spinner' : 'loading-spinner solo-spinner';
     loadingSpinner.className = loadingSpinnerClass;
 
@@ -55,10 +62,15 @@ const pokemonRepository = (function () {
     return loadingSpinner;
   }
 
+  // Hide a loading spinner
   function hideLoadingSpinner(loadingSpinner) {
     loadingSpinner.remove();
   }
 
+  // Fetch basic information about a given pokemon.
+  // (Needed for displaying a pokemon-card)
+  // This will be lazy-ly called by the observer, once
+  // a card becomes visible on the screen.
   function fetchBasicInfo(pokemon) {
     return fetch(pokemon.detailsUrl)
       .then((res) => res.json())
@@ -76,6 +88,9 @@ const pokemonRepository = (function () {
       });
   }
 
+  // Fetch detailed information about a given pokemon.
+  // (Needed for modal display)
+  // This will be called when trying to show the details modal.
   function fetchDetails(pokemon) {
     // Don't fetch details multiple times
     if (pokemon.flavorText) {
@@ -94,19 +109,25 @@ const pokemonRepository = (function () {
       });
   }
 
+  // Update the modal's elements with data for a given pokemon.
   function updateModalWithData(pokemon) {
+    // Id (= Pokédex index)
     const modalId = document.querySelector('.modal-id');
     modalId.innerText = `#${pokemon.id}`;
 
+    // Name
     const modalName = document.querySelector('.modal-name');
     modalName.innerText = pokemon.name;
 
+    // Type(s)
     const modalTypes = document.querySelector('.modal-types');
     // Remove all children by replacing them with a single text node.
     // textContent has much better performance than innerHTML because
     // its value is not parsed as HTML.
     // (check https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent)
     modalTypes.textContent = null;
+
+    // Add a tag for each type a pokemon possesses
     pokemon.types.forEach((t) => {
       const typeTag = document.createElement('p');
       typeTag.classList.add('modal-tag', t.type.name);
@@ -114,20 +135,24 @@ const pokemonRepository = (function () {
       modalTypes.appendChild(typeTag);
     });
 
+    // Image
     const modalImage = document.querySelector('.modal-img');
     modalImage.src = pokemon.imgUrl;
     modalImage.alt = pokemon.name;
     modalImage.className = `modal-img gradient--${pokemon.mainType}`;
 
+    // Height and weight
     const modalHeight = document.querySelector('#modal-height');
     modalHeight.innerText = `${pokemon.height * 10}cm`;
 
     const modalWeight = document.querySelector('#modal-weight');
     modalWeight.innerText = `${pokemon.weight / 10}kg`;
 
+    // Flavor text
     const modalFlavorText = document.querySelector('.modal-flavor-text');
     modalFlavorText.innerText = pokemon.flavorText;
 
+    // Type weaknesses
     const modalWeaknesses = document.querySelector('.modal-weaknesses');
     // Remove all children by replacing them with a single text node.
     modalWeaknesses.textContent = null;
@@ -135,12 +160,17 @@ const pokemonRepository = (function () {
     let weakAgainst = [];
     let strongAgainst = [];
 
+    // Gather all weaknesses and strengths of each of the pokemon's types
+    // from our look up table TYPE_LUT.
     pokemon.types.forEach((type) => {
       const typeName = type.type.name;
       weakAgainst = weakAgainst.concat(TYPE_LUT[typeName].weak);
       strongAgainst = strongAgainst.concat(TYPE_LUT[typeName].strong);
     });
 
+    // Remove a type weakness if it is nullified
+    // (the pokemon is simultaneously weak and strong against it)
+    // or if it's a duplicate.
     const filteredWeaknesses = weakAgainst.filter((weakness, index) => {
       const isNotNullified = !strongAgainst.includes(weakness);
       const isNoDuplicate = index === weakAgainst.indexOf(weakness);
@@ -148,6 +178,7 @@ const pokemonRepository = (function () {
       return isNotNullified && isNoDuplicate;
     });
 
+    // Add a tag for each of the remaining weaknesses
     filteredWeaknesses.forEach((weakness) => {
       const weaknessTag = document.createElement('p');
       weaknessTag.classList.add('modal-tag', weakness);
@@ -156,6 +187,7 @@ const pokemonRepository = (function () {
     });
   }
 
+  // Show the modal
   function showModal() {
     const modalContainer = document.querySelector('#modal-container');
     modalContainer.classList.add('is-visible');
@@ -170,6 +202,7 @@ const pokemonRepository = (function () {
     }
   }
 
+  // Hide the modal
   function hideModal() {
     const modalContainer = document.querySelector('#modal-container');
     modalContainer.classList.remove('is-visible');
@@ -183,23 +216,32 @@ const pokemonRepository = (function () {
     }
   }
 
+  // Fetches pokemon details and presents them
+  // in a modal.
   function showDetails(pokemon) {
+    // Do nothing if the modal is already open
     if (modalIsOpen) {
       return;
     }
 
+    // Show a loading spinner as while we're
+    // fetching the pokemon details
     const loadingSpinner = showLoadingSpinner();
 
     fetchDetails(pokemon)
       .then(() => {
+        // Once we're done loading, prepare the modal
+        // and show it
         updateModalWithData(pokemon);
         showModal();
       })
       .finally(() => {
+        // Hide the loading spinner
         hideLoadingSpinner(loadingSpinner);
       });
   }
 
+  // Fill out a blank card with a given pokemon's data
   function fillPokemonCardWithData(newCard, pokemon) {
     // Add the pokemon's name
     const name = document.createElement('h2');
@@ -241,17 +283,19 @@ const pokemonRepository = (function () {
     newCard.appendChild(id);
   }
 
+  // Create a blank pokemon-card that will lazy-ly load
+  // its data when it becomes visible on the screen
   function createPokemonCard(pokemon) {
-    // Create a blank pokemon card and attach event listeners
     const newCard = document.createElement('li');
     newCard.classList.add('pokemon-card');
 
+    // Attach event listeners to showDetails() on click or key input
     newCard.addEventListener('click', () => showDetails(pokemon));
     newCard.addEventListener('keydown', (e) => {
       // [ENTER] or [SPACE] key
       if (e.keyCode === 13 || e.keyCode === 32) {
         // We need to preventDefault() to stop this event from also triggering
-        // the modal-close button's click handler.
+        // the modal-close button's click handler
         e.preventDefault();
         modalWasOpenedByKeyboard = true;
         showDetails(pokemon);
@@ -284,6 +328,7 @@ const pokemonRepository = (function () {
     return newCard;
   }
 
+  // Adds a list item (pokemon-card) to our pokemon-list element
   function addListItem(pokemon) {
     // Create a blank card and add it to the list
     const newCard = createPokemonCard(pokemon);
@@ -292,6 +337,7 @@ const pokemonRepository = (function () {
     list.appendChild(newCard);
   }
 
+  // Fetches the list of pokemon from the API
   function loadList() {
     const loadingSpinner = showLoadingSpinner();
 
@@ -309,6 +355,7 @@ const pokemonRepository = (function () {
       });
   }
 
+  // Hide pokemon-cards for pokemon that don't match the search term
   function hideUnmatchedPokemon() {
     const listItems = document.querySelectorAll('.pokemon-card');
 
@@ -321,7 +368,7 @@ const pokemonRepository = (function () {
   }
 
   function initModal() {
-    // Initialize modal by adding the event listeners
+    // Initialize modal by adding event listeners
     const modalContainer = document.querySelector('#modal-container');
     modalContainer.addEventListener('click', (e) => {
       if (e.target === modalContainer && modalIsOpen) {
@@ -335,8 +382,8 @@ const pokemonRepository = (function () {
     });
   }
 
+  // Initialize the search bar by adding the event listener
   function initSearchBar() {
-    // Initialize the search bar by adding the event listener
     const searchBar = document.querySelector('#pokemon-search');
     searchBar.addEventListener('input', (e) => {
       searchTerm = e.target.value;
@@ -344,8 +391,8 @@ const pokemonRepository = (function () {
     });
   }
 
+  // Create an IntersectionObserver to lazy load the pokemon-cards.
   function createObserver() {
-    // Create an IntersectionObserver to lazy load the pokemon-cards.
     observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
@@ -359,16 +406,17 @@ const pokemonRepository = (function () {
     return observer;
   }
 
+  // Initialize the global window object by adding event listeners
   function initWindow() {
-    // Initialize the search bar by adding the event listeners
     window.addEventListener('keydown', (e) => {
       // [ESCAPE] key
       if (e.keyCode === 27 && modalIsOpen) {
+        // Close the modal on hitting [ESCAPE]
         hideModal();
       }
       // [TAB] key
       if (e.keyCode === 9 && modalWasOpenedByKeyboard) {
-        // Trap focus inside modal as long as it is open but only when it was opened by keyboard
+        // Trap focus inside the modal as long as it is open but only when it was opened by keyboard
         if (e.preventDefault) {
           e.preventDefault();
         }
@@ -401,4 +449,5 @@ const pokemonRepository = (function () {
   };
 }());
 
+// Initialize the app
 pokemonRepository.initialize();
