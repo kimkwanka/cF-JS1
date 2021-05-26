@@ -295,9 +295,25 @@ header {
   margin: 0 16px;
 }
 
+/* By setting the height to 0 and padding-bottom to 66.67% we 
+   get a responsive container that maintains an aspect ratio of 2 / 3. 
+
+   Check https://css-tricks.com/aspect-ratio-boxes/ for more on information. */
+
+.modal-img-container {
+  height: 0;
+  margin-top: 16px;
+  padding-bottom: 66.67%;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
 .modal-img {
   image-rendering: pixelated;
-  margin-top: 16px;
+  object-fit: cover;
+  position: absolute;
+  height: 100%;
   width: 100%;
 }
 
