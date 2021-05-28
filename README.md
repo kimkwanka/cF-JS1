@@ -1,4 +1,4 @@
-## cF-JS1
+## cf-js1
 Simple Pokédex app using HTML, CSS and vanilla JS.
 
 API used: https://pokeapi.co/api/v2/
