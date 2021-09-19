@@ -1,4 +1,7 @@
 ## cf-js1
-Simple Pokédex app using HTML, CSS and vanilla JS.
+Pokédex app using HTML, CSS and vanilla JS.
 
 API used: https://pokeapi.co/api/v2/
+
+### Live demo
+Check out the [live demo](kimkwanka.github.io/cf-js1) to see the app in action.
